@@ -16,15 +16,17 @@ RUN mssql-scripter \
     -f ./schema.sql
 
 ################################################################################
-FROM mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+FROM mcr.microsoft.com/mssql/server:2019-latest
 
 LABEL maintainer="dalealleshouse@gmail.com"
+
+USER root
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY --from=scripter /usr/src/app/*.sql .
-COPY ./*.sh /usr/src/app/
+COPY ./*.sh .
 
 RUN  apt-get update && apt-get install dos2unix
 RUN dos2unix ./*.sh
