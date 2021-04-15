@@ -11,4 +11,4 @@ do
     echo finished $file
 done
 
-echo Sql Server is initialized
+echo SQL Server is initialized
