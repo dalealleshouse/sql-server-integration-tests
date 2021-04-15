@@ -1,3 +1,6 @@
+# This Dockerfile attracts every other Dockerfile in the universe with a force
+# proportional to the product of their masses and inversely proportional to the
+# distance between them
 FROM python:3.9-slim AS scripter
 
 WORKDIR /usr/src/app
@@ -11,9 +14,9 @@ ARG CONNECT_STRING
 
 RUN mssql-scripter \
     --connection-string="$CONNECT_STRING" \
-    --target-server-version 2014 \
     --display-progress \
-    -f ./schema.sql
+    --exclude-types User \
+    -f ./02_schema.sql
 
 ################################################################################
 FROM mcr.microsoft.com/mssql/server:2019-latest
@@ -26,7 +29,9 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY --from=scripter /usr/src/app/*.sql .
-COPY ./*.sh .
+COPY ./*.sql .
+COPY ./run-initialization.sh .
+COPY ./entrypoint.sh .
 
 RUN  apt-get update && apt-get install dos2unix
 RUN dos2unix ./*.sh
