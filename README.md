@@ -1,5 +1,9 @@
 # Easy SQL server Integration Testing
 
+Two tools:
+- [mssql-scripter](https://github.com/microsoft/mssql-scripter)
+- [mssql docker container](https://hub.docker.com/_/microsoft-mssql-server)
+
 1. Build the docker container
     ``` bash
     ./build_sql.sh
